@@ -5,13 +5,17 @@ class Mahasiswa extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$session = $this->session->userdata('data-id');
+		if($session['status'] != 'active' && $session['level_user'] != 2){
+			redirect('account/login');
+		}
 	}
 
 	public function index(){
 		$data['records'] = $this->m_mahasiswa->select('tbl_mahasiswa')->result_array();
-		$this->load->view('layout/layout_header');
+		$this->load->view('layout/layout_header_dashboard');
 		$this->load->view('mahasiswa/v_select', $data);
-		$this->load->view('layout/layout_footer');
+		$this->load->view('layout/layout_footer_dashboard');
 	}
 
 	public function insert(){
@@ -19,9 +23,9 @@ class Mahasiswa extends CI_Controller {
 			'jurusan' => $this->l_custom->list()
 		);
 
-		$this->load->view('layout/layout_header');
+		$this->load->view('layout/layout_header_dashboard');
 		$this->load->view('mahasiswa/v_insert', $data);
-		$this->load->view('layout/layout_footer');
+		$this->load->view('layout/layout_footer_dashboard');
 	}
 
 	public function insert_action(){
@@ -69,6 +73,13 @@ class Mahasiswa extends CI_Controller {
 		);
 		$data['records'] = $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
 
+		// cek uri photo empty or not
+		if(!empty($data['records']['photo'])){
+			$uri = explode("/", $data['records']['photo'])[6];
+		}else{
+			$uri = "Photo is empty!";
+		}
+
 		if($where['id'] == ''||$where['id'] == 0||$where['id'] != $data['records']['id']){
 			$log = array(
 				'error' => 1,
@@ -80,8 +91,12 @@ class Mahasiswa extends CI_Controller {
 				'status' 	=> "Berhasil!"
 			);
 			$this->m_mahasiswa->delete($where, 'tbl_mahasiswa');
+			// cek if photo is exists to empty data and update new
+			if(file_exists(FCPATH.'/assets/photo/'.$uri)){
+				unlink(FCPATH.'/assets/photo/'.$uri);
+			}
 		}
-		
+
 		echo json_encode($log);
 	}
 
@@ -95,9 +110,9 @@ class Mahasiswa extends CI_Controller {
 		if($where['id'] == ''||$where['id'] == 0||$where['id'] != $byId['records']['id']){
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 		}else{
-			$this->load->view('layout/layout_header');
+			$this->load->view('layout/layout_header_dashboard');
 			$this->load->view('mahasiswa/v_update', $byId);
-			$this->load->view('layout/layout_footer');
+			$this->load->view('layout/layout_footer_dashboard');
 		}
 	}
 
@@ -167,9 +182,9 @@ class Mahasiswa extends CI_Controller {
 		if($where['id'] == ''||$where['id'] == 0||$where['id'] != $data['records']['id']){
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 		}else{
-			$this->load->view('layout/layout_header');
+			$this->load->view('layout/layout_header_dashboard');
 			$this->load->view('mahasiswa/v_detail', $data);
-			$this->load->view('layout/layout_footer');
+			$this->load->view('layout/layout_footer_dashboard');
 		}
 	}
 
@@ -189,6 +204,13 @@ class Mahasiswa extends CI_Controller {
 		$config['file_name']			=	'img_'.$where['id'];
 		$this->load->library('upload', $config);
 		
+		// cek uri photo empty or not
+		if(!empty($byId['records']['photo'])){
+			$uri = explode("/", $byId['records']['photo'])[6];
+		}else{
+			$uri = "Photo is empty!";
+		}
+
 		if($where['id'] == ''||$where['id'] == 0||$where['id'] != $byId['records']['id']){
 			$error = $this->l_custom->not_found();
 			$this->session->set_flashdata('message', $error['message']);
@@ -205,6 +227,12 @@ class Mahasiswa extends CI_Controller {
 					'photo'		=>	base_url().'assets/photo/'.$this->upload->data('file_name')
 				);
 				$this->m_mahasiswa->update($where, $log, 'tbl_mahasiswa');
+
+				// cek if photo is exists to empty data and update new
+				if(file_exists(FCPATH.'/assets/photo/'.$uri)){
+					unlink(FCPATH.'/assets/photo/'.$uri);
+				}
+
 				redirect(base_url().'mahasiswa/detail/'.$where['id']);
 			}
 		}

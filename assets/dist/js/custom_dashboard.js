@@ -42,10 +42,10 @@ $(()=>{
     event.preventDefault();
     if(confirm('Apakah anda ingin hapus data!')){
       var uri = window.location;
-      //console.log(uri.protocol+"//"+uri.host+"/mahasiswa/delete/"+$(this).attr('delete-mahasiswa'));
+      //console.log(uri.protocol+"//"+uri.host+"/mahasiswa/delete/"+$(this).attr('hapus-mahasiswa'));
       $.ajax({
         type: "post",
-        url: uri.protocol+"//"+uri.host+"/tutorial-ci/mahasiswa/delete/"+$(this).attr('delete-mahasiswa'),
+        url: uri.protocol+"//"+uri.host+"/tutorial-ci/mahasiswa/delete/"+$(this).attr('hapus-mahasiswa'),
         dataType: "json",
         encode: true,
         beforeSend: function(){
@@ -62,7 +62,7 @@ $(()=>{
               alert(data.status);
               $('#btn-delete-mahasiswa').removeAttr("disabled");
               $('#btn-delete-mahasiswa').html("Hapus");
-              uri.reload();
+              uri.href = uri.href;
             }
           }
         }
@@ -165,7 +165,7 @@ $(()=>{
   //           $('#error-update-photo').html('');
   //           $("#btn-photo-mahasiswa").removeAttr("disabled");
   //           $("#btn-photo-mahasiswa").html("Simpan data");
-  //           uri.reload();
+  //           uri.href;
   //         }
   //       }
   //     }
