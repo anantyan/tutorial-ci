@@ -130,8 +130,8 @@ class Mahasiswa extends CI_Controller {
 		$this->form_validation->set_rules('nama', 'Nama', 'required');
 		$this->form_validation->set_rules('jurusan', 'Jurusan', 'required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'required');
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_emails');
-		$this->form_validation->set_rules('no_telp', 'No. Telp.', 'required|is_natural|min_length[3]|max_length[12]');
+		$this->form_validation->set_rules('email', 'Email', 'valid_emails');
+		$this->form_validation->set_rules('no_telp', 'No. Telp.', 'is_natural|min_length[3]|max_length[12]');
 		$data = array(
 			'nim' 		=>	$this->db->escape_str($nim),
 			'nama'		=>	$this->db->escape_str($nama),
@@ -177,7 +177,9 @@ class Mahasiswa extends CI_Controller {
 		$where = array(
 			'id' => $this->db->escape_str($id)
 		);
-		$data['records'] = $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
+		$data = array(
+			'records' => $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array()
+		);	
 		
 		if($where['id'] == ''||$where['id'] == 0||$where['id'] != $data['records']['id']){
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
@@ -199,9 +201,9 @@ class Mahasiswa extends CI_Controller {
 		$config['allowed_types']	=	'gif|jpg|png';
 		$config['overwrite']			=	true;
 		$config['max_size']				=	2048;
-		$config['max_width']			=	1024;
-		$config['max_height']			=	1024;
-		$config['file_name']			=	'img_'.$where['id'];
+		$config['max_width']			=	0;
+		$config['max_height']			=	0;
+		$config['file_name']			=	'img_'.date('YmdHis').'_'.$where['id'];
 		$this->load->library('upload', $config);
 		
 		// cek uri photo empty or not
