@@ -205,13 +205,6 @@ class Mahasiswa extends CI_Controller {
 		$config['max_height']			=	0;
 		$config['file_name']			=	'img_'.date('YmdHis').'_'.$where['id'];
 		$this->load->library('upload', $config);
-		
-		// cek uri photo empty or not
-		if(!empty($byId['records']['photo'])){
-			$uri = explode("/", $byId['records']['photo'])[6];
-		}else{
-			$uri = "Photo is empty!";
-		}
 
 		if($where['id'] == ''||$where['id'] == 0||$where['id'] != $byId['records']['id']){
 			$error = $this->l_custom->not_found();
@@ -229,6 +222,11 @@ class Mahasiswa extends CI_Controller {
 					'photo'		=>	base_url().'assets/photo/'.$this->upload->data('file_name')
 				);
 				$this->m_mahasiswa->update($where, $log, 'tbl_mahasiswa');
+
+				// cek uri photo empty or not
+				if(!empty($byId['records']['photo'])){
+					$uri = explode("/", $byId['records']['photo'])[6];
+				}
 
 				// cek if photo is exists to empty data and update new
 				if(file_exists(FCPATH.'/assets/photo/'.$uri)){

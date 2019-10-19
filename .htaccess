@@ -1,6 +1,13 @@
-RewriteEngine On
+<IfModule mod_headers.c>
+  <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
 
-# make remove index.php
+<IfModule mod_rewrite.c>
+RewriteEngine On
+#RewriteBase /
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php/$1 [L]
+RewriteRule ^ index.php [L,QSA]
+</IfModule>
