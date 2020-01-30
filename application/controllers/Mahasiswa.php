@@ -225,7 +225,8 @@ class Mahasiswa extends CI_Controller {
 
 				// cek uri photo empty or not
 				if(!empty($byId['records']['photo'])){
-					$uri = explode("/", $byId['records']['photo'])[6];
+					$uri = explode('/', $byId['records']['photo']);
+					$uri = array_pop($uri); // untuk mengambil url terakhir
 				}
 
 				// cek if photo is exists to empty data and update new
