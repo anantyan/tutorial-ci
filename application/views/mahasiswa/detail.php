@@ -49,7 +49,7 @@
 			<label>File input</label>
 			<div class="input-group">
 				<div class="custom-file">
-					<input type="file" class="custom-file-input" name="photo" required="true">
+					<input type="file" class="custom-file-input" name="photo">
 					<label class="custom-file-label">Choose file</label>
 				</div>
 				<div class="input-group-append">
@@ -67,6 +67,25 @@
 		<button type="button" class="btn btn-info btn-sm"
 			onclick="window.location.href='<?= base_url('mahasiswa');?>';">Kembali</button>
 		<button type="submit" class="btn btn-primary btn-sm">Upload Foto</button>
+		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#lihat_foto">Lihat
+			Foto</button>
 	</div>
 	<?= form_close(); ?>
+</div>
+<div class="modal fade" id="lihat_foto">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Foto</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<img class="img-fluid" src="<?= $record['photo']['name']; ?>" alt="<?= $record['nama']; ?>">
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>

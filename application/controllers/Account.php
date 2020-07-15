@@ -8,10 +8,6 @@ class Account extends CI_Controller {
   }
 
   public function index(){
-    redirect('account/login');
-  }
-
-  public function login(){
     $session = $this->session->userdata('data-id');
     switch($session['level_user']){
       case 1:
@@ -22,9 +18,13 @@ class Account extends CI_Controller {
         break;  
       default:
         $this->session->unset_userdata('data-id');
-        $this->load->view('layout/layout_header_account');
-        $this->load->view('account/v_login');
-        $this->load->view('layout/layout_footer_account');
+        $data = [
+          'style'		  =>	$this->l_stylescript->style(),
+          'script'	  =>	$this->l_stylescript->script(),
+          'title'		  =>	"Halaman Login",
+          'template'	=>	"account/login"
+        ];
+        $this->load->view('layouts/content/login', $data);
     }
   }
 
@@ -98,22 +98,6 @@ class Account extends CI_Controller {
   
   public function logout(){
     $this->session->unset_userdata('data-id');
-    redirect('account/login');
-  }
-
-  public function register(){
-    $session = $this->session->userdata('data-id');
-    switch($session['level_user']){
-      case 1:
-        redirect('admin/');
-        break;
-      case 2:
-        redirect('mahasiswa/');
-        break;  
-      default:
-        $this->load->view('layout/layout_header_account');
-        $this->load->view('account/v_register');
-        $this->load->view('layout/layout_footer_account');
-    }    
+    redirect('account');
   }
 }

@@ -14,12 +14,23 @@ class L_Custom {
     return $inject;
   }
 
-  public function alert($name, $value) {
-    return $this->CI->session->set_flashdata($name, '<div class="alert alert-success alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <h5><i class="icon fas fa-check"></i> Alert!</h5>
-      '.$value.'
-    </div>');
+  public function alert($name, $value, $jenis) {
+    switch ($jenis) {
+      case 'alert-success':
+        return $this->CI->session->set_flashdata($name, '<div class="alert '.$jenis.' alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h5><i class="icon fas fa-check"></i> Alert!</h5>
+          '.$value.'
+        </div>');
+        break;
+      case 'alert-warning':
+        return $this->CI->session->set_flashdata($name, '<div class="alert '.$jenis.' alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+          '.$value.'
+        </div>');
+        break;
+    }
   }
 
   public function list() {

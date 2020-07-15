@@ -9,7 +9,7 @@ class Mahasiswa extends CI_Controller {
 		parent::__construct();
 		$this->data_id = $this->session->userdata('data-id');
 		// if($this->data_id['status'] != 'active' && $this->data_id['level_user'] != 2){
-		// 	redirect('account/login');
+		// 	redirect('account');
 		// }
 	}
 
@@ -19,9 +19,17 @@ class Mahasiswa extends CI_Controller {
 			'style'		=>	$this->l_stylescript->style(),
 			'script'	=>	$this->l_stylescript->script(),
 			'title'		=>	"Halaman Depan Mahasiswa",
-			'template'	=>	"mahasiswa/select"
+			'template'	=>	"mahasiswa/select",
 		];
 		$this->load->view('layouts/content/main', $data);
+	}
+
+	public function modal_detail_foto($id='') {
+		$where['id']				=	$this->db->escape_str($id);
+		$data['record']				=	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
+		$data['record']['photo'] 	=	json_decode($data['record']['photo'], true);
+		header('Content-type:application/json');
+		echo json_encode($data, true); 
 	}
 
 	public function detail($id='') {
@@ -58,10 +66,10 @@ class Mahasiswa extends CI_Controller {
 		$this->form_validation->set_rules('jurusan', 'Jurusan', 'required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'required');
 		if(!$this->form_validation->run()){
-			$this->l_custom->alert('nim', form_error('nim'));
-			$this->l_custom->alert('nama', form_error('nama'));
-			$this->l_custom->alert('jurusan', form_error('jurusan'));
-			$this->l_custom->alert('success', form_error('alamat'));
+			$this->l_custom->alert('nim', form_error('nim'), 'alert-warning');
+			$this->l_custom->alert('nama', form_error('nama'), 'alert-warning');
+			$this->l_custom->alert('jurusan', form_error('jurusan'), 'alert-warning');
+			$this->l_custom->alert('alamat', form_error('alamat'), 'alert-warning');
 		}else{
 			$data = [
 				'nim'		=>	$this->db->escape_str($this->input->post('nim', true)),
@@ -70,7 +78,7 @@ class Mahasiswa extends CI_Controller {
 				'alamat'	=>	$this->db->escape_str($this->input->post('alamat', true))
 			];
 			$this->m_mahasiswa->insert($data, 'tbl_mahasiswa');
-			$this->l_custom->alert('success', 'Berhasil Disimpan!');
+			$this->l_custom->alert('success', 'Berhasil Disimpan!', 'alert-success');
 		}
 		redirect('mahasiswa/insert');
 	}
@@ -94,7 +102,7 @@ class Mahasiswa extends CI_Controller {
 			if(file_exists(FCPATH.'/assets/photo/'.$uri)){
 				unlink(FCPATH.'/assets/photo/'.$uri);
 			}
-			$this->l_custom->alert('success', 'Berhasil Disimpan!');
+			$this->l_custom->alert('success', 'Berhasil Disimpan!', 'alert-success');
 			redirect('mahasiswa');
 		}
 	}
@@ -124,12 +132,12 @@ class Mahasiswa extends CI_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'valid_emails');
 		$this->form_validation->set_rules('no_telp', 'No. Telp.', 'is_natural|min_length[3]|max_length[12]');
 		if($this->form_validation->run() != true){
-			$this->l_custom->alert('nim', form_error('nim'));
-			$this->l_custom->alert('nama',  form_error('nama'));
-			$this->l_custom->alert('jurusan', form_error('jurusan'));
-			$this->l_custom->alert('alamat', form_error('alamat'));
-			$this->l_custom->alert('email', form_error('email'));
-			$this->l_custom->alert('no_telp', form_error('no_telp'));
+			$this->l_custom->alert('nim', form_error('nim'), 'alert-warning');
+			$this->l_custom->alert('nama',  form_error('nama'), 'alert-warning');
+			$this->l_custom->alert('jurusan', form_error('jurusan'), 'alert-warning');
+			$this->l_custom->alert('alamat', form_error('alamat'), 'alert-warning');
+			$this->l_custom->alert('email', form_error('email'), 'alert-warning');
+			$this->l_custom->alert('no_telp', form_error('no_telp'), 'alert-warning');
 		}else{
 			$where['id'] 		=	$this->db->escape_str($id);
 			$data				= [
@@ -145,10 +153,10 @@ class Mahasiswa extends CI_Controller {
 				$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 			}else{
 				$this->m_mahasiswa->update($where, $data, 'tbl_mahasiswa');
-				$this->l_custom->alert('success', 'Berhasil disimpan!');
-				redirect('mahasiswa/update/'.$where['id']);
+				$this->l_custom->alert('success', 'Berhasil disimpan!', 'alert-success');
 			}
 		}
+		redirect('mahasiswa/update/'.$where['id']);
 	}
 
 	public function upload_photo($id='') {
@@ -169,7 +177,7 @@ class Mahasiswa extends CI_Controller {
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 		}else{
 			if(!$this->upload->do_upload('photo')){
-				$this->l_custom->alert('upload_foto', $this->upload->display_errors());
+				$this->l_custom->alert('upload_foto', $this->upload->display_errors(), 'alert-warning');
 			}else{
 				$data = [
 					'photo'	=>	json_encode([
@@ -190,7 +198,7 @@ class Mahasiswa extends CI_Controller {
 				if(file_exists(FCPATH.'/assets/photo/'.$uri)){
 					unlink(FCPATH.'/assets/photo/'.$uri);
 				}
-				$this->l_custom->alert('success', 'Berhasil disimpan!');
+				$this->l_custom->alert('success', 'Berhasil disimpan!', 'alert-success');
 			}
 			redirect(base_url().'mahasiswa/detail/'.$where['id']);
 		}

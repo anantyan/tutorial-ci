@@ -30,7 +30,7 @@
 			<label>Jurusan</label>
 			<select id="input_jurusan" class="form-control" style="width: 100%;" name="jurusan">
 				<option value="">Pilihan...</option>
-				<?php foreach($jurusan as $j => $k) {?>
+				<?php foreach($jurusan as $k) {?>
 				<option <?php if($k == $record['jurusan']){echo'selected="selected"';} ?> value="<?= $k; ?>"><?= $k; ?>
 				</option>
 				<?php } ?>
