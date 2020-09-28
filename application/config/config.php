@@ -136,7 +136,7 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FALSE;
+$config['composer_autoload'] = 'vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -448,7 +448,7 @@ $config['global_xss_filtering'] = TRUE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-$config['csrf_protection'] = TRUE; // if your using http/https you must enable in cookie
+$config['csrf_protection'] = FALSE; // if your using http/https you must enable in cookie
 $config['csrf_token_name'] = 'csrf_haha_token';
 $config['csrf_cookie_name'] = 'csrf_hihi_cookie';
 $config['csrf_expire'] = 7200;

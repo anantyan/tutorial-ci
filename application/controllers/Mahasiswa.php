@@ -90,6 +90,7 @@ class Mahasiswa extends CI_Controller {
 		if(empty($where['id']) || empty($data['record']['id'])){
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 		}else{
+			echo json_encode($data['record']);
 			$this->m_mahasiswa->delete($where, 'tbl_mahasiswa');
 
 			// cek uri photo empty or not
@@ -176,7 +177,7 @@ class Mahasiswa extends CI_Controller {
 		if(empty($where['id']) || empty($photo['record']['id'])){
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 		}else{
-			if(!$this->upload->do_upload('photo')){
+			if(!$this->upload->do_upload('photo')){ // sesuaikan pada form name
 				$this->l_custom->alert('upload_foto', $this->upload->display_errors(), 'alert-warning');
 			}else{
 				$data = [

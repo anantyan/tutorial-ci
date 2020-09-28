@@ -18,11 +18,13 @@ class M_Mahasiswa extends CI_Model {
   
   public function insert($data, $table){
     $this->db->insert($table, $data);
+    return $this->db->affected_rows();
   }
 
   public function delete($data, $table){
     $this->db->where($data);
     $this->db->delete($table);
+    return $this->db->affected_rows();
   }
 
   public function select_by_id($data, $table){
@@ -41,5 +43,6 @@ class M_Mahasiswa extends CI_Model {
   public function update($where, $data, $table){
     $this->db->where($where);
     $this->db->update($table, $data);
+    return $this->db->affected_rows();
   }
 }
