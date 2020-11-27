@@ -1,6 +1,23 @@
 var base_url = window.location;
 
 $(() => {
+	/* let data = {
+		"m2m:cin": {
+			"rn": "cin_VsG3KJbMTKKQBPqH",
+			"ty": 4,
+			"ri": "/antares-cse/cin-VsG3KJbMTKKQBPqH",
+			"pi": "/antares-cse/cnt-sXKFT5DOSCGLXwnV",
+			"ct": "20201123T202158",
+			"lt": "20201123T202158",
+			"st": 0,
+			"cnf": "text/plain:0",
+			"cs": 126,
+			"con": "{\"temperature\":27,\"humidity\":79,\"wind_speed\":8.708709,\"rain_level\":0.572246,\"latitude\":\"-6.8718189\",\"longitude\":\"107.5872477\"}"
+		}
+	}
+	data['m2m:cin']['con'] = JSON.parse(data['m2m:cin']['con'])
+	alert(data['m2m:cin']); // ini hanya example data */
+
 	$('#tbl_mahasiswa').DataTable({
 		"paging": true,
 		"lengthChange": true,

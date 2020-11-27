@@ -2,15 +2,22 @@
 
 use chriskacerguis\RestServer\RestController;
 
-class Api extends RestController {
+class Mahasiswa_api extends RestController {
+
+    protected $limits = 10000;
     
     public function __construct() {
         parent::__construct();
         $this->load->model('m_mahasiswa');
         $this->load->helper('security');
+        $this->methods['index_get']['limit'] = $this->limits;
+        $this->methods['index_delete']['limit'] = $this->limits;
+        $this->methods['index_put']['limit'] = $this->limits;
+        $this->methods['index_post']['limit'] = $this->limits;
+        $this->methods['photo_post']['limit'] = $this->limits;
     }
 
-    public function mahasiswa_get($id=null) {
+    public function index_get($id=null) {
         // $id = $this->db->escape_str(xss_clean($this->get('id')));
         if($id == null) {
             $data = $this->m_mahasiswa->select('tbl_mahasiswa')->result_array();
@@ -30,7 +37,7 @@ class Api extends RestController {
         }
     }
 
-    public function mahasiswa_delete($id=null) {
+    public function index_delete($id=null) {
         // $id = $this->db->escape_str(xss_clean($this->delete('id')));
         if($id == null) {
             $this->response([
@@ -52,7 +59,7 @@ class Api extends RestController {
         }
     }
 
-    public function mahasiswa_put($id=null) {
+    public function index_put($id=null) {
         $data = [
             'nim' => $this->db->escape_str(xss_clean($this->put('nim'))),
             'nama' => $this->db->escape_str(xss_clean($this->put('nama'))),
@@ -81,7 +88,7 @@ class Api extends RestController {
         }
     }
 
-    public function mahasiswa_post() {
+    public function index_post() {
         $data = [
             'nim' => $this->db->escape_str(xss_clean($this->post('nim'))),
             'nama' => $this->db->escape_str(xss_clean($this->post('nama'))),
@@ -103,7 +110,7 @@ class Api extends RestController {
         }
     }
 
-    public function mahasiswa_photo_post($id=null) {
+    public function photo_post($id=null) {
 		$photo['record'] 			= 	$this->m_mahasiswa->select_by_id(['id'=>$id], 'tbl_mahasiswa')->row_array();
 		$photo['photo'] 			= 	json_decode($photo['record']['photo'], true);
 		$config['upload_path']		=	'assets/photo/';

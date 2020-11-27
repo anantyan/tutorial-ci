@@ -72,7 +72,7 @@ $config['rest_status_field_name'] = 'status';
 | The field name for the message inside the response
 |
 */
-$config['rest_message_field_name'] = 'error';
+$config['rest_message_field_name'] = 'message';
 
 /*
 |--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ $config['rest_realm'] = 'REST API';
 |           authorization key
 |
 */
-$config['rest_auth'] = false;
+$config['rest_auth'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -298,7 +298,7 @@ $config['rest_database_group'] = 'default';
 | The table name in your database that stores API keys
 |
 */
-$config['rest_keys_table'] = 'keys';
+$config['rest_keys_table'] = 'tbl_keys';
 
 /*
 |--------------------------------------------------------------------------
@@ -323,7 +323,7 @@ $config['rest_keys_table'] = 'keys';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
 */
-$config['rest_enable_keys'] = false;
+$config['rest_enable_keys'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -376,7 +376,7 @@ $config['rest_key_length'] = 40;
 | 2012/06/12. See RFC 6648 specification for more details
 |
 */
-$config['rest_key_name'] = 'X-API-KEY';
+$config['rest_key_name'] = 'X-KEY';
 
 /*
 |--------------------------------------------------------------------------
@@ -403,7 +403,7 @@ $config['rest_key_name'] = 'X-API-KEY';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
 */
-$config['rest_enable_logging'] = false;
+$config['rest_enable_logging'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -414,7 +414,7 @@ $config['rest_enable_logging'] = false;
 | table name to match e.g. my_logs
 |
 */
-$config['rest_logs_table'] = 'logs';
+$config['rest_logs_table'] = 'tbl_logs';
 
 /*
 |--------------------------------------------------------------------------
@@ -486,7 +486,7 @@ $config['rest_logs_json_params'] = false;
 |
 | See application/controllers/api/example.php for examples
 */
-$config['rest_enable_limits'] = false;
+$config['rest_enable_limits'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -497,7 +497,7 @@ $config['rest_enable_limits'] = false;
 | table name to match e.g. my_limits
 |
 */
-$config['rest_limits_table'] = 'limits';
+$config['rest_limits_table'] = 'tbl_limits';
 
 /*
 |--------------------------------------------------------------------------
