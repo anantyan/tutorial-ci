@@ -10,15 +10,15 @@ class Mahasiswa extends CI_Controller
 	{
 		parent::__construct();
 		$this->data_id = $this->session->userdata('data-id');
-		// if($this->data_id['status'] != 'active' && $this->data_id['level_user'] != 2){
-		// 	redirect('account');
-		// }
+		/* if($this->data_id['status'] != 'active' && $this->data_id['level_user'] != 2){
+			redirect('account');
+		} */
 	}
 
 	public function index()
 	{
 		$data = [
-			'records'	=>	$this->m_mahasiswa->select('tbl_mahasiswa')->result_array(),
+			'records'	=>	$this->m_mahasiswa->select('tbl_mahasiswa'),
 			'style'		=>	$this->l_stylescript->style(),
 			'script'	=>	$this->l_stylescript->script(),
 			'title'		=>	"Halaman Depan Mahasiswa",
@@ -30,7 +30,7 @@ class Mahasiswa extends CI_Controller
 	public function modal_detail_foto($id = '')
 	{
 		$where['id']				=	$this->db->escape_str($id);
-		$data['record']				=	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
+		$data['record']				=	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa');
 		$data['record']['photo'] 	=	json_decode($data['record']['photo'], true);
 		header('Content-type:application/json');
 		echo json_encode($data, true);
@@ -40,7 +40,7 @@ class Mahasiswa extends CI_Controller
 	{
 		$where['id'] 			 = $this->db->escape_str($id);
 		$data = [
-			'record'	=> 	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array(),
+			'record'	=> 	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa'),
 			'style'		=>	$this->l_stylescript->style(),
 			'script'	=>	$this->l_stylescript->script(),
 			'title'		=>	"Halaman Detail Mahasiswa",
@@ -94,7 +94,7 @@ class Mahasiswa extends CI_Controller
 	public function delete($id = '')
 	{
 		$where['id'] 	= $this->db->escape_str($id);
-		$data['record'] = $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
+		$data['record'] = $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa');
 		$data['record']['photo'] = json_decode($data['record']['photo'], true);
 		if (empty($where['id']) || empty($data['record']['id'])) {
 			$this->load->view('errors/html/error_404', $this->l_custom->not_found());
@@ -121,7 +121,7 @@ class Mahasiswa extends CI_Controller
 	{
 		$where['id'] 	= $this->db->escape_str($id);
 		$data = [
-			'record'	=> 	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array(),
+			'record'	=> 	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa'),
 			'jurusan'	=>	$this->l_custom->list(),
 			'style'		=>	$this->l_stylescript->style(),
 			'script'	=>	$this->l_stylescript->script(),
@@ -160,7 +160,7 @@ class Mahasiswa extends CI_Controller
 				'email'		=>	$this->db->escape_str($this->input->post('email', true)),
 				'no_telp'	=>	$this->db->escape_str($this->input->post('no_telp', true))
 			];
-			$byId['records']	=	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
+			$byId['records']	=	$this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa');
 			if (empty($where['id']) || empty($byId['records']['id'])) {
 				$this->load->view('errors/html/error_404', $this->l_custom->not_found());
 			} else {
@@ -174,7 +174,7 @@ class Mahasiswa extends CI_Controller
 	public function upload_photo($id = '')
 	{
 		$where['id']						=	$this->db->escape_str($id);
-		$photo['record'] 				= $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa')->row_array();
+		$photo['record'] 				= $this->m_mahasiswa->select_by_id($where, 'tbl_mahasiswa');
 		$photo['photo'] 				= json_decode($photo['record']['photo'], true);
 		$config['upload_path']	=	'assets/photo/';
 		$config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -194,11 +194,11 @@ class Mahasiswa extends CI_Controller
 			} else {
 				$image_blob = file_get_contents($this->upload->data('full_path'));
 				$data = [
-					'photo'	=>	[
-						'name'	=> base_url() . 'assets/photo/' . $this->upload->data('file_name'),
+					'photo'	=>	json_encode([
+						'name'	=> base_url().'assets/photo/'.$this->upload->data('file_name'),
 						'mime'	=> $this->upload->data('file_type'),
-						'blob'	=> $image_blob,
-					]
+						'blob'	=> $this->upload->data('full_path')
+				], true)
 				];
 				$this->m_mahasiswa->update($where, $data, 'tbl_mahasiswa');
 
@@ -214,7 +214,7 @@ class Mahasiswa extends CI_Controller
 				}
 				$this->l_custom->alert('success', 'Berhasil disimpan!', 'alert-success');
 				// header('Content-type:'.$data['photo']['mime']);
-				// print_r($image_blob);
+				// echo $image_blob;
 			}
 			redirect(base_url() . 'mahasiswa/detail/' . $where['id']);
 		}

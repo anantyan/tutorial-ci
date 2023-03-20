@@ -12,7 +12,7 @@ class M_Mahasiswa extends CI_Model {
     if(!$sql){
       return $error;
     }else{
-      return $sql;
+      return $sql->result_array();
     }
   }
   
@@ -36,7 +36,7 @@ class M_Mahasiswa extends CI_Model {
     if(!$sql){
       return $error;
     }else{
-      return $sql;
+      return $sql->row_array();
     }
   }
 
