@@ -8,8 +8,6 @@ class Mahasiswa_api extends RestController {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('m_mahasiswa');
-        $this->load->helper('security');
         $this->methods['index_get']['limit'] = $this->limits;
         $this->methods['index_delete']['limit'] = $this->limits;
         $this->methods['index_put']['limit'] = $this->limits;
