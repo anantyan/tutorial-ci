@@ -102,6 +102,7 @@ class Mahasiswa_api extends RestController {
                     'alamat' => $this->put('alamat'),
                     'email' => $this->put('email'),
                     'no_telp' => $this->put('no_telp'),
+                    'update_at' => date('Y-m-d H:i:s')
                 ];
                 $result_count = $this->m_mahasiswa->update(['id'=>$id], $data, 'tbl_mahasiswa');
 
